@@ -1,0 +1,294 @@
+package findword ;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Findword {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        int A=0,B=0;
+		String word;
+	 List<Integer> pos = new ArrayList<Integer>();
+		Scanner in = new Scanner(System.in);
+		int row=0, column=0,char_counter=0;
+		char table [][]=
+			{
+				{'s','o','u','l','b','n','t','r'},
+				{'p','w','o','l','p','c','e','l'},
+				{'r','l','a','f','a','w','s','k'},
+				{'k','c','e','l','o','r','m','r'},
+				{'k','r','n','t','l','e','g','a'},
+				{'r','o','a','t','r','o','s','h'},
+				{'i','b','o','d','r','o','w','s'},
+				{'u','t','e','r','c','o','m','p'},
+			};
+		for (int i=0; i<8; i++)
+		{
+			for (int j=0; j<8; j++)
+			{
+				System.out.print(table[i][j]);
+				System.out.print("   ");
+			}
+			
+			System.out.print("\n");
+		}
+		
+		System.out.print("Enter the word you found: ");
+		word = in.next();
+		in.close();
+		
+		for (int i=0; i<8; i++)
+		{
+			for (int j=0; j<8; j++)
+			{
+				if (table[i][j] == word.charAt(0))
+				{
+					pos.add(i);
+                    pos.add(j);
+				}
+			}
+		}
+		
+			for(A=0; A<pos.size()-1; A+=2)  
+			{
+				row=pos.get(A);
+				column=pos.get(A+1);
+				
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++) // left to right
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+						//	
+							column= (column+1)%8;
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+					}
+					
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  // right to left
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							column--;
+							if(column==-1)
+							{
+								column=7;
+							}
+							
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+						
+					}
+				}
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //downwards
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							row = (row+1)%8;
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+						
+					}
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //upwards
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							if(row==0)
+							{row=8;}
+							row= (row-1);
+							
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+					}
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //diagonally upwards left to right
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							if(row==0 || column == 7)
+							{
+								B = row;
+						        row = column;
+						        column = B;
+							}
+							else
+							{
+								row--;
+								column++;
+							}
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+					}
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //diagonally downwards right to left
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							if(row==7 || column == 0)
+							{
+								B = row;
+						        row = column;
+						        column = B;
+							}
+							else
+							{
+								row++;
+								column--;
+							}
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+					}
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //diagonally upwards right to left
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							if(column==0 || row==0)
+							{
+								if((row-column)>=0)
+								{
+									column=7-row;
+									row=7;
+								}
+								else
+								{
+									row=7-column;
+									column=7;
+								}
+							}
+							else
+							{
+								column-=column;
+								row-=row;
+							}
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+						
+					}
+				}
+				
+				row=pos.get(A);
+				column=pos.get(A+1);
+				if(char_counter==0)
+				{
+					for(int j =0; j<word.length()-1; j++)  //diagonally downwards lift to right
+					{
+						if (table[row][column] == word.charAt(j))
+						{
+							char_counter++;
+							if(column==7 || row==7)
+							{
+								if((row-column)>=0)
+								{
+									row=7-column;
+									column=0;
+								}
+								else
+								{
+									column=7-row;
+									row=0;
+								}
+							}
+							else
+							{
+								column+=column;
+								row+=row;
+							}
+						}
+						else
+						{
+							char_counter=0;
+							break;
+						}
+					}
+				}
+				
+				if (char_counter > 0)
+				{
+					break;
+				}
+					
+			}
+			
+			if (char_counter > 0)
+			{
+				System.out.print("found the word\n");
+			}
+			else
+			{
+				System.out.print("word not found\n");
+			}
+			
+
+	}
+    }
